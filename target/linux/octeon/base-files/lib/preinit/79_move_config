@@ -18,7 +18,7 @@ octeon_move_config() {
 		erlite)
 			move_config "/dev/sda1"
 			;;
-		itus,shield-router)
+		itus,shield-router | itus,shield-bridge | itus,shield-gateway)
 			move_config "/dev/mmcblk1p1"
 			;;
 		ubnt,edgerouter-4)

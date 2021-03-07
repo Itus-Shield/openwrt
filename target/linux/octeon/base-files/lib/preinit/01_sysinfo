@@ -1,3 +1,38 @@
+do_get_shield_mode() {
+        # Figure out what mode the Shield is in
+        # We need to determine what Mode the Shield is in - Time to query the GPIOs
+        GPIO=99
+        GPIO16=99
+        GPIO17=99
+
+        # GPIO16 decides Recovery (formally Gateway) Mode.
+        GPIO=16
+        echo ${GPIO} > /sys/class/gpio/export
+        echo in > /sys/class/gpio/gpio$GPIO/direction
+        GPIO16=$(cat /sys/class/gpio/gpio${GPIO}/value)
+        echo $GPIO > /sys/class/gpio/unexport
+
+        # GPIO17 decides between Bridge and Router Mode
+        GPIO=17
+        echo $GPIO > /sys/class/gpio/export
+        echo in > /sys/class/gpio/gpio$GPIO/direction
+        GPIO17=$(cat /sys/class/gpio/gpio${GPIO}/value)
+        echo $GPIO > /sys/class/gpio/unexport
+
+        if [ $GPIO16 -eq 0 ]; then
+           # Recovery Mode
+           echo "itus,shield-gateway"
+        else
+           if [ $GPIO17 -eq 0 ]; then
+              # Bridge Mode
+                 echo "itus,shield-bridge"
+           else
+              # Router Mode
+                 echo "itus,shield-router"
+           fi
+        fi
+}
+
 do_sysinfo_octeon() {
 	local machine
 	local name
@@ -23,7 +58,7 @@ do_sysinfo_octeon() {
 		;;
 
 	"ITUS_SHIELD"*)
-		name="itus,shield-router"
+		name=$(do_get_shield_mode)
 		;;
 
 	*)
@@ -38,3 +73,4 @@ do_sysinfo_octeon() {
 }
 
 boot_hook_add preinit_main do_sysinfo_octeon
+ 

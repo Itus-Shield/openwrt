@@ -24,7 +24,7 @@ platform_copy_config() {
 		cp -af "$UPGRADE_BACKUP" "/mnt/$BACKUP_FILE"
 		umount /mnt
 		;;
-	itus,shield-router)
+	itus,shield-router | itus,shield-bridge | itus,shield-gateway)
 		mount -t vfat /dev/mmcblk1p1 /mnt
 		cp -af "$UPGRADE_BACKUP" "/mnt/$BACKUP_FILE"
 		umount /mnt
@@ -49,7 +49,7 @@ platform_do_flash() {
 
 	mkdir -p /boot
 
-	if [ $board = "itus,shield-router" ]; then
+	if [ $board = "itus,shield-router" -o $board = "itus,shield-bridge" -o $board = "itus,shield-gateway" ]; then
 		# mmcblk1p1 (fat) contains all ELF-bin images for the Shield
 		mount /dev/mmcblk1p1 /boot
 
@@ -93,6 +93,12 @@ platform_do_upgrade() {
 	itus,shield-router)
 		kernel=ItusrouterImage
 		;;
+	itus,shield-bridge)
+		kernel=ItusbridgeImage
+		;;
+	itus,shield-gateway)
+		kernel=ItusgatewayImage
+		;;
 	*)
 		return 1
 	esac
@@ -113,7 +119,7 @@ platform_check_image() {
 	case "$board" in
 	er | \
 	erlite | \
-	itus,shield-router | \
+	itus,shield-router | itus,shield-bridge | itus,shield-gateway | \
 	ubnt,edgerouter-4)
 		local kernel_length=$(tar xf $tar_file $board_dir/kernel -O | wc -c 2> /dev/null)
 		local rootfs_length=$(tar xf $tar_file $board_dir/root -O | wc -c 2> /dev/null)
