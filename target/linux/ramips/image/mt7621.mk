@@ -1174,6 +1174,13 @@ define Device/ubnt_edgerouter_common
   DEVICE_PACKAGES += -wpad-basic-wolfssl
 endef
 
+define Device/ubnt_edgerouter-10x
+  $(Device/ubnt_edgerouter_common)
+  DEVICE_MODEL := EdgeRouter 10X
+  SUPPORTED_DEVICES += ER-10X ubnt-er10x ubiquiti,edgerouter-10x
+endef
+TARGET_DEVICES += ubnt_edgerouter-10x
+
 define Device/ubnt_edgerouter-x
   $(Device/ubnt_edgerouter_common)
   DEVICE_MODEL := EdgeRouter X

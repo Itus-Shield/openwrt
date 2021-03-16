@@ -1,0 +1,50 @@
+/dts-v1/;
+
+#include "mt7621_ubnt_edgerouter-x.dtsi"
+
+/ {
+        model = "Ubiquiti EdgeRouter 10X";
+        compatible = "ubnt,edgerouter-10x", "mediatek,mt7621-soc";
+
+	rtl8367rb {
+		compatible = "realtek,rtl8367b", "rtl8367b";
+		cpu_port = <6>;
+		realtek,extif1 = <1 0 1 1 1 1 1 1 2>;
+		mii-bus = <&mdio>;
+	};
+};
+
+&nand {
+	partitions {
+		partition@740000 {
+			reg = <0x740000 0x1f4c0000>;
+		};
+	};
+};
+
+&switch0 {
+	ports {
+		port@5 {
+			reg = <5>;
+			label = "eth5";
+			phy-mode = "rgmii-rxid";
+			mtd-mac-address = <&factory 0x22>;
+			mtd-mac-address-increment = <5>;
+
+		fixed-link {
+			speed = <1000>;
+			full-duplex;
+			pause;
+			};
+		};
+	};
+};
+
+&xhci {
+	status = "okay";
+};
+
+&sdhci {
+	status = "okay";
+};
+

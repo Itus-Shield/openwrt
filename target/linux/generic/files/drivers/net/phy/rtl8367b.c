@@ -1540,6 +1540,7 @@ static int rtl8367b_detect(struct rtl8366_smi *smi)
 		return ret;
 	}
 
+/*  Remove this switch case for testing and hard-set chip_name
 	switch (chip_ver) {
 	case 0x1000:
 		chip_name = "8367RB";
@@ -1553,7 +1554,8 @@ static int rtl8367b_detect(struct rtl8366_smi *smi)
 			chip_num, chip_ver, chip_mode);
 		return -ENODEV;
 	}
-
+*/
+	chip_name = "8367RB";
 	dev_info(smi->parent, "RTL%s chip found\n", chip_name);
 
 	return 0;

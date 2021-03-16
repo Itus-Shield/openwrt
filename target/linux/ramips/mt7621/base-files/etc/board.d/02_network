@@ -60,6 +60,10 @@ ramips_setup_interfaces()
 	ubnt,edgerouter-x)
 		ucidef_set_interfaces_lan_wan "eth1 eth2 eth3 eth4" "eth0"
 		;;
+        ubnt,edgerouter-10x)
+                ucidef_set_interfaces_lan_wan "eth1 eth2 eth3 eth4" "eth0"
+		ucidef_add_switch "switch0" "0:lan" "1:lan" "2:lan" "3:lan" "4:lan" "6u@eth5"
+                ;;
 	ubnt,edgerouter-x-sfp)
 		ucidef_set_interfaces_lan_wan "eth1 eth2 eth3 eth4 eth5" "eth0"
 		;;
